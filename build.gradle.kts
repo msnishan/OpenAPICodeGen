@@ -37,7 +37,7 @@ gradlePlugin {
             implementationClass = "io.github.msnishan.gen.CodegenPlugin"
             displayName = "OPenAPI JPA Entity Generator"
             description = "A Gradle plugin that parses OpenAPI schema definitions and generates JPA entity classes."
-            tags.set(listOf("opanapi", "jpa", "entity", "generator", "generate", "plugin"))
+            tags.set(listOf("opanapi", "jpa", "entity", "generator", "generate", "codegen"))
         }
     }
 }
