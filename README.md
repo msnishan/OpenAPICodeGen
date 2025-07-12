@@ -21,7 +21,7 @@ If published locally:
 
 ```groovy
 plugins {
-    id "com.msnishan.gen" version "0.0.1"
+    id 'io.github.msnishan.gen' version '1.0.0'
 }
 ```
 
@@ -31,12 +31,12 @@ plugins {
 tasks.named("generateOpenApiJpaEntities") {
     specFile = "$rootDir/openapi.yaml"
     packageName = "com.example.generated"
-    outputDir = file("$buildDir/generated-entities/src/main/java")
+    outputDir = file("$rootDir/generated-entities/src/main/java")
 }
 ```
 #### Kotlin
 ```kotlin
-import com.msnishan.gen.openapi.OpenApiJpaGeneratorTask
+import io.github.msnishan.gen.OpenApiJpaGeneratorTask
 
 tasks.named<OpenApiJpaGeneratorTask>("generateOpenApiJpaEntities") {
     specFile = "$rootDir/openapi.yaml"
@@ -50,27 +50,27 @@ tasks.named<OpenApiJpaGeneratorTask>("generateOpenApiJpaEntities") {
 
 #### Groovy
 ```groovy
-import com.msnishan.gen.openapi.OpenApiJpaGeneratorTask
+import io.github.msnishan.gen.OpenApiJpaGeneratorTask
 
 tasks.register("generateEntities", OpenApiJpaGeneratorTask) {
     specFile = "$rootDir/openapi.yaml"
     packageName = "com.example.generated"
-    outputDir = file("$buildDir/generated-entities/src/main/java")
+    outputDir = file("$rootDir/generated-entities/src/main/java")
 }
 
 sourceSets.main.java.srcDirs += "$buildDir/generated-entities"
 ```
 #### Kotlin
 ```kotlin
-import com.msnishan.gen.openapi.OpenApiJpaGeneratorTask
+import io.github.msnishan.gen.OpenApiJpaGeneratorTask
 
 tasks.register<OpenApiJpaGeneratorTask>("generateEntities") {
     specFile = "$rootDir/openapi.yaml"
     packageName = "com.example.generated"
-    outputDir = file("$buildDir/generated-entities/src/main/java")
+    outputDir = file("$rootDir/generated-entities/src/main/java")
 }
 
-sourceSets["main"].java.srcDirs += "$buildDir/generated-entities"
+sourceSets["main"].java.srcDirs += "$rootDir/generated-entities"
 
 ```
 ## 🔧 Supported OpenAPI Extensions
