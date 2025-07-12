@@ -1,0 +1,74 @@
+package $packageName;
+
+$importStatements
+
+@Setter
+@Getter
+@NoArgsConstructor
+#macro(uniqueConstraintsBlock $constraints)
+    uniqueConstraints = {
+#foreach ($uc in $constraints)
+    @UniqueConstraint(columnNames = {
+    #foreach ($col in $uc)
+        "$col"#if ($foreach.hasNext), #end
+    #end
+    })#if ($foreach.hasNext), #end
+#end
+}
+#end
+@$persistenceType
+#if ($tableName || ($uniqueConstraints && $uniqueConstraints.size() > 0))
+@Table(
+#if ($tableName)
+    name = "$tableName"#if ($uniqueConstraints && $uniqueConstraints.size() > 0),#end
+#end
+#if ($uniqueConstraints && $uniqueConstraints.size() > 0)
+    #uniqueConstraintsBlock($uniqueConstraints)
+#end
+)
+#end
+public class $className$superClass {
+
+#foreach ($field in $fields)
+#if ($field.rel == "one-to-many")
+    @OneToMany(mappedBy = "$field.name", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<$field.type> ${field.name}List = new ArrayList<>();
+
+#elseif ($field.rel == "many-to-one")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private $field.type $field.name;
+
+#elseif ($field.rel == "embedded")
+    @Embedded
+    private $field.type $field.name;
+
+#else
+    #if ($field.columnData.length() > 0)
+    @Column($field.columnData)
+    #end
+    private $field.type $field.name;
+
+#end
+#end
+
+#if ($persistenceType == "Entity")
+    public $className(Long id) {
+        super(id);
+    }
+#end
+
+#foreach ($field in $fields)
+#if ($field.rel == "one-to-many")
+    public void add${field.type}($field.type child) {
+        ${field.name}List.add(child);
+        child.set${className}(this);
+    }
+
+    public void remove${field.type}($field.type child) {
+        ${field.name}List.remove(child);
+        child.set${className}(null);
+    }
+#end
+#end
+
+}
